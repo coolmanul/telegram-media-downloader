@@ -2,6 +2,16 @@ import os, yt_dlp, asyncio, aiohttp
 from config import TEMP_DIR
 
 
+async def get_tiktok_thumbnail(url):
+    opts = {'quiet': True, 'no_warnings': True}
+    try:
+        with yt_dlp.YoutubeDL(opts) as ydl:
+            info = await asyncio.to_thread(ydl.extract_info, url, download=False)
+            return info.get('thumbnail') if info else None
+    except Exception:
+        return None
+
+
 async def check_tiktok_video(url):
     opts = {
         'quiet': True, 'no_warnings': True,
